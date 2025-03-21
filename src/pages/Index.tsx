@@ -1,12 +1,33 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from 'react';
+import InvoiceForm from '@/components/InvoiceForm';
+import InvoicePreview from '@/components/InvoicePreview';
+import Header from '@/components/Header';
+import { defaultInvoiceData } from '@/lib/invoiceTypes';
 
 const Index = () => {
+  const [invoiceData, setInvoiceData] = useState(defaultInvoiceData);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background flex flex-col">
+      <Header />
+      
+      <main className="flex-1 container max-w-7xl mx-auto px-4 pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Invoice Form */}
+          <div className="order-2 lg:order-1">
+            <InvoiceForm 
+              invoiceData={invoiceData} 
+              setInvoiceData={setInvoiceData} 
+            />
+          </div>
+          
+          {/* Invoice Preview */}
+          <div className="order-1 lg:order-2">
+            <InvoicePreview invoiceData={invoiceData} />
+          </div>
+        </div>
+      </main>
     </div>
   );
 };
