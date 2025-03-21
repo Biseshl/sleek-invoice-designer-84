@@ -17,21 +17,26 @@ export const generatePDF = (invoiceData: InvoiceData): void => {
     return;
   }
 
+  // Better PDF generation options
   const opt = {
-    margin: [0, 0, 0, 0],
+    margin: [5, 0, 5, 0], // Top, right, bottom, left margins in mm
     filename: `Invoice_${invoiceData.invoiceNumber}.pdf`,
-    image: { type: 'jpeg', quality: 1 },
+    image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { 
-      scale: 2,
+      scale: 2, // Higher scale for better quality
       useCORS: true,
       logging: false,
-      letterRendering: true
+      letterRendering: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff'
     },
     jsPDF: { 
       unit: 'mm', 
       format: 'a4', 
-      orientation: 'portrait' 
-    }
+      orientation: 'portrait',
+      compress: true
+    },
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
   };
 
   toast.promise(
@@ -52,12 +57,22 @@ export const generatePDF = (invoiceData: InvoiceData): void => {
 };
 
 export const emailInvoice = (invoiceData: InvoiceData): void => {
-  // In a real app, you would send the PDF to the server for emailing
-  // For this demo, we'll just open the email client
-  const subject = encodeURIComponent(`Invoice ${invoiceData.invoiceNumber}`);
-  const body = encodeURIComponent(`Please find attached invoice ${invoiceData.invoiceNumber} for ${invoiceData.amount} AUD.\n\nRegards,\n${invoiceData.issuerName}`);
+  // Create a more professional email template
+  const subject = encodeURIComponent(`Invoice ${invoiceData.invoiceNumber} from ${invoiceData.issuerName}`);
+  const body = encodeURIComponent(
+    `Dear ${invoiceData.recipientName},\n\n` +
+    `Please find attached Invoice ${invoiceData.invoiceNumber} for ${invoiceData.amount} AUD.\n\n` +
+    `Payment Details:\n` +
+    `Bank: ${invoiceData.bankName}\n` +
+    `BSB: ${invoiceData.bsb}\n` +
+    `Account: ${invoiceData.accountNumber}\n` +
+    `Account Name: ${invoiceData.accountName}\n\n` +
+    `If you have any questions regarding this invoice, please don't hesitate to contact me.\n\n` +
+    `Regards,\n${invoiceData.issuerName}\n` +
+    `${invoiceData.email}\n${invoiceData.phone}`
+  );
   
   window.location.href = `mailto:?subject=${subject}&body=${body}`;
   
-  toast.success('Email client opened');
+  toast.success('Email client opened with invoice details');
 };
