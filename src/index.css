@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -93,6 +94,7 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -102,12 +104,19 @@
 
 @layer components {
   .invoice-paper {
-    width: 210mm;
-    min-height: 297mm;
+    width: 100%;
+    min-height: 100%;
     margin: 0 auto;
     background: white;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     position: relative;
+  }
+
+  @media (min-width: 768px) {
+    .invoice-paper {
+      width: 210mm;
+      min-height: 297mm;
+    }
   }
 
   .invoice-paper-inner {
@@ -117,7 +126,7 @@
   }
 
   .invoice-container {
-    @apply bg-invoice-light-gray rounded-xl p-8 mb-8 transition-all duration-300;
+    @apply bg-invoice-light-gray rounded-xl p-4 sm:p-6 md:p-8 mb-8 transition-all duration-300;
   }
 
   .glass-panel {
@@ -177,5 +186,17 @@
   
   .font-feature-settings {
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent;
+  }
+
+  .shadow-soft {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1;
   }
 }

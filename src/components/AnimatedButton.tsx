@@ -25,8 +25,8 @@ const AnimatedButton: React.FC<AnimatedButtonProps> = ({
       className={cn(
         'relative overflow-hidden transition-all duration-300 ease-out active:scale-[0.98]',
         'before:absolute before:inset-0 before:bg-white/10 before:opacity-0 hover:before:opacity-100 before:transition-opacity',
-        variant === 'primary' && 'bg-primary hover:bg-primary/90 text-white',
-        icon && 'flex items-center gap-2',
+        variant === 'primary' && 'bg-primary hover:bg-primary/90 text-white shadow-md',
+        icon && 'flex items-center gap-1.5',
         className
       )}
       {...props}
