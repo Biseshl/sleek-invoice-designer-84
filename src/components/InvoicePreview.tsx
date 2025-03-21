@@ -56,10 +56,10 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
       </div>
 
       <div className="bg-white rounded-lg shadow-elevation border border-border/40 overflow-hidden">
-        <div id="invoice-preview" className="invoice-paper bg-white">
-          <div className="invoice-paper-inner">
+        <div id="invoice-preview" className="invoice-paper bg-white p-8">
+          <div className="invoice-paper-inner max-w-4xl mx-auto">
             {/* Header */}
-            <div className="mb-12">
+            <div className="mb-10">
               <div className="flex justify-between items-start">
                 <div>
                   <h1 className="text-3xl font-semibold mb-1">{invoiceData.issuerName}</h1>
@@ -75,7 +75,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
             </div>
 
             {/* Invoice Details */}
-            <div className="mb-8">
+            <div className="mb-6">
               <div className="flex justify-between items-start">
                 <div>
                   <p className="mb-1">
@@ -99,7 +99,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
             {/* Recipient Details */}
             <div className="mb-8">
               <h3 className="text-lg font-medium mb-2">ISSUED TO:</h3>
-              <div className="pl-4">
+              <div className="pl-4 border-l-2 border-gray-200">
                 <p className="font-medium">{invoiceData.recipientName}</p>
                 <p className="text-muted-foreground whitespace-pre-line">
                   {formatAddress(invoiceData.recipientAddress)}
@@ -108,7 +108,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
             </div>
 
             {/* Description */}
-            <div className="mb-12">
+            <div className="mb-10">
               <h3 className="text-lg font-medium mb-3">Description</h3>
               <div className="border-t border-b border-border py-4">
                 <p className="whitespace-pre-line">{invoiceData.description}</p>
@@ -116,11 +116,11 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
             </div>
 
             {/* Amount */}
-            <div className="mb-16">
+            <div className="mb-10">
               <div className="flex justify-end">
                 <div className="w-64">
-                  <div className="flex justify-between py-2">
-                    <span className="font-medium">Total:</span>
+                  <div className="flex justify-between py-2 font-medium">
+                    <span>Total:</span>
                     <span>AUD ${invoiceData.amount}</span>
                   </div>
                 </div>
@@ -128,7 +128,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
             </div>
 
             {/* Footer */}
-            <div className="mt-auto">
+            <div className="mt-auto pt-6">
               <div className="border-t border-border pt-4">
                 <h3 className="text-lg font-medium mb-3">Payment Details</h3>
                 <div className="grid grid-cols-2 gap-x-8 gap-y-2">
