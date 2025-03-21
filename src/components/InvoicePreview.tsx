@@ -75,7 +75,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
             </div>
 
             {/* Invoice Details */}
-            <div className="mb-12">
+            <div className="mb-8">
               <div className="flex justify-between items-start">
                 <div>
                   <p className="mb-1">
@@ -96,8 +96,19 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
               </div>
             </div>
 
+            {/* Recipient Details */}
+            <div className="mb-8">
+              <h3 className="text-lg font-medium mb-2">ISSUED TO:</h3>
+              <div className="pl-4">
+                <p className="font-medium">{invoiceData.recipientName}</p>
+                <p className="text-muted-foreground whitespace-pre-line">
+                  {formatAddress(invoiceData.recipientAddress)}
+                </p>
+              </div>
+            </div>
+
             {/* Description */}
-            <div className="mb-16">
+            <div className="mb-12">
               <h3 className="text-lg font-medium mb-3">Description</h3>
               <div className="border-t border-b border-border py-4">
                 <p className="whitespace-pre-line">{invoiceData.description}</p>

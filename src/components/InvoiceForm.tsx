@@ -32,8 +32,9 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ invoiceData, setInvoiceData }
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="essential" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-4">
+            <TabsList className="grid w-full grid-cols-3 mb-4">
               <TabsTrigger value="essential">Essential Info</TabsTrigger>
+              <TabsTrigger value="client">Client Details</TabsTrigger>
               <TabsTrigger value="business">Business Details</TabsTrigger>
             </TabsList>
             
@@ -79,6 +80,30 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ invoiceData, setInvoiceData }
                   name="amount" 
                   value={invoiceData.amount}
                   onChange={handleChange}
+                />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="client" className="mt-0 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="recipientName">Client Name</Label>
+                <Input 
+                  id="recipientName" 
+                  name="recipientName" 
+                  value={invoiceData.recipientName}
+                  onChange={handleChange}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="recipientAddress">Client Address</Label>
+                <Textarea 
+                  id="recipientAddress" 
+                  name="recipientAddress" 
+                  rows={3}
+                  value={invoiceData.recipientAddress}
+                  onChange={handleChange}
+                  className="resize-none"
                 />
               </div>
             </TabsContent>

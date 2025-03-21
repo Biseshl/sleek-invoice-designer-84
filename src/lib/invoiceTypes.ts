@@ -6,6 +6,10 @@ export interface InvoiceData {
   description: string;
   amount: string;
   
+  // Recipient Fields
+  recipientName: string;
+  recipientAddress: string;
+  
   // Fixed Fields (Pre-Filled but Editable)
   issuerName: string;
   issuerAddress: string;
@@ -23,6 +27,9 @@ export const defaultInvoiceData: InvoiceData = {
   date: new Date().toISOString().split('T')[0],
   description: "Consulting Services",
   amount: "1,000.00",
+  
+  recipientName: "Prime Cleaning & Maintenance",
+  recipientAddress: "Level 2/143 Wells St, South\nMelbourne VIC 3205",
   
   issuerName: "John Smith",
   issuerAddress: "123 Business Street\nSydney NSW 2000\nAustralia",
