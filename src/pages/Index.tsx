@@ -79,13 +79,13 @@ const Index = () => {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="flex-1 container mx-auto px-4 py-6 pb-20 max-w-full xl:max-w-[1500px] 2xl:max-w-[1700px]"
+        className="flex-1 container mx-auto px-4 py-6 pb-20 max-w-[1800px]"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left Section - Forms */}
           <motion.div 
             variants={itemVariants}
-            className={`${isLargeScreen ? 'lg:col-span-5 xl:col-span-4' : 'w-full'} ${isMobile ? 'order-2' : 'order-1'}`}
+            className={`${isLargeScreen ? 'lg:col-span-5 xl:col-span-5' : 'w-full'} ${isMobile ? 'order-2' : 'order-1'}`}
           >
             <Tabs defaultValue="invoice" className="w-full mb-6">
               <TabsList className="w-full grid grid-cols-3 mb-4">
@@ -95,7 +95,7 @@ const Index = () => {
               </TabsList>
               
               <TabsContent value="invoice" className="mt-2">
-                <div className="attractive-card p-4 sm:p-6 shadow-elevation">
+                <div className="attractive-card p-6 shadow-elevation">
                   <InvoiceForm 
                     invoiceData={invoiceData} 
                     setInvoiceData={setInvoiceData} 
@@ -104,16 +104,16 @@ const Index = () => {
               </TabsContent>
               
               <TabsContent value="clients" className="mt-2 space-y-6">
-                <div className="attractive-card p-4 sm:p-6 shadow-elevation">
+                <div className="attractive-card p-6 shadow-elevation">
                   <BusinessInfoPanel onSaveBusinessInfo={handleBusinessInfoSave} />
                 </div>
-                <div className="attractive-card p-4 sm:p-6 shadow-elevation">
+                <div className="attractive-card p-6 shadow-elevation">
                   <ClientInfoPanel onSelectClient={handleClientSelect} />
                 </div>
               </TabsContent>
               
               <TabsContent value="work" className="mt-2">
-                <div className="attractive-card p-4 sm:p-6 shadow-elevation overflow-hidden">
+                <div className="attractive-card p-6 shadow-elevation overflow-hidden">
                   <WorkCalendarPanel onGenerateInvoiceAmount={handleGenerateInvoiceAmount} />
                 </div>
               </TabsContent>
@@ -123,7 +123,7 @@ const Index = () => {
           {/* Right Section - Preview */}
           <motion.div 
             variants={itemVariants}
-            className={`${isLargeScreen ? 'lg:col-span-7 xl:col-span-8' : 'w-full'} ${isMobile ? 'order-1 mb-4' : 'order-2'}`}
+            className={`${isLargeScreen ? 'lg:col-span-7 xl:col-span-7' : 'w-full'} ${isMobile ? 'order-1 mb-4' : 'order-2'}`}
           >
             <div className={`${!isMobile ? 'sticky top-4' : ''}`}>
               <InvoicePreview invoiceData={invoiceData} />

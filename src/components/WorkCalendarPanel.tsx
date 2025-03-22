@@ -271,10 +271,10 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className={`grid grid-cols-1 ${isLargeScreen ? 'xl:grid-cols-12' : 'lg:grid-cols-12'} gap-4 xl:gap-6`}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-6">
           {/* Calendar Section */}
-          <div className={`flex flex-col space-y-4 ${isLargeScreen ? 'xl:col-span-5' : 'lg:col-span-5'}`}>
-            <div className="border rounded-md p-2 md:p-3 bg-white">
+          <div className="flex flex-col space-y-6">
+            <div className="border rounded-md p-4 bg-white h-auto">
               <Calendar
                 mode="single"
                 selected={date}
@@ -295,10 +295,10 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
               />
             </div>
 
-            <div className="border rounded-md p-3 md:p-4 space-y-3 bg-white">
+            <div className="border rounded-md p-4 space-y-4 bg-white">
               <div className="text-sm font-medium">Add Work Day</div>
               
-              <div className="grid grid-cols-1 gap-3">
+              <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="date">Date</Label>
                   <Popover>
@@ -342,7 +342,7 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
                   </Popover>
                 </div>
                 
-                <div className={`grid ${isXLScreen ? 'grid-cols-2' : isBelowLG ? 'grid-cols-2' : 'grid-cols-1'} gap-3`}>
+                <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="hours">Hours Worked</Label>
                     <div className="relative">
@@ -390,28 +390,28 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
           </div>
           
           {/* Work Days List and Summary */}
-          <div className={`flex flex-col space-y-4 ${isLargeScreen ? 'xl:col-span-7' : 'lg:col-span-7'}`}>
-            <div className="border rounded-md p-3 md:p-4 flex-1 overflow-hidden bg-white">
-              <div className="font-medium mb-3 text-sm">Work Days</div>
+          <div className="flex flex-col space-y-6">
+            <div className="border rounded-md p-4 flex-1 overflow-hidden bg-white h-auto">
+              <div className="font-medium mb-4 text-sm">Work Days</div>
               
-              <div className={`max-h-[250px] ${isLargeScreen ? 'lg:max-h-[325px] xl:max-h-[275px] 2xl:max-h-[325px]' : 'sm:max-h-[300px]'} overflow-y-auto pr-1`}>
+              <div className="max-h-[350px] overflow-y-auto pr-2">
                 {workDays.length === 0 ? (
-                  <div className="text-center text-muted-foreground p-4 md:p-6">
+                  <div className="text-center text-muted-foreground p-6">
                     <CalendarIcon className="mx-auto h-8 w-8 opacity-50 mb-2" />
                     <p className="text-sm">No work days added yet</p>
                     <p className="text-xs">Select a date and add hours to begin</p>
                   </div>
                 ) : (
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     {workDays
                       .sort((a, b) => a.date.getTime() - b.date.getTime())
                       .map((workDay, index) => (
                         <div 
                           key={index}
-                          className="border rounded-md p-2 md:p-3 flex justify-between items-center"
+                          className="border rounded-md p-3 flex justify-between items-center hover:bg-gray-50"
                         >
                           <div>
-                            <div className="font-medium text-xs md:text-sm">
+                            <div className="font-medium text-sm">
                               {format(workDay.date, 'EEE, MMM d, yyyy')}
                               <span className={`text-xs ml-1 ${getDayRateClass(workDay.date)}`}>
                                 ({getDayTypeLabel(workDay.date)})
@@ -420,7 +420,7 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
                             <div className="text-xs text-muted-foreground">
                               {workDay.hours} hours @ ${workDay.hourlyRate.toFixed(2)}/hr
                             </div>
-                            <div className="text-xs md:text-sm font-medium mt-1">
+                            <div className="text-sm font-medium mt-1">
                               ${(workDay.hours * workDay.hourlyRate).toFixed(2)}
                             </div>
                           </div>
@@ -428,9 +428,9 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
                             variant="ghost" 
                             size="sm"
                             onClick={() => handleRemoveWorkDay(workDay.date)}
-                            className="h-7 w-7 md:h-8 md:w-8 p-0"
+                            className="h-8 w-8 p-0"
                           >
-                            <Trash2 className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground hover:text-destructive" />
+                            <Trash2 className="h-4 w-4 text-muted-foreground hover:text-destructive" />
                           </Button>
                         </div>
                       ))}
@@ -439,7 +439,7 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
               </div>
             </div>
             
-            <div className="border rounded-md p-3 md:p-4 bg-white">
+            <div className="border rounded-md p-4 bg-white">
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <div className="font-medium text-sm">Total Days:</div>
@@ -451,10 +451,10 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
                 </div>
                 <div className="flex justify-between items-center">
                   <div className="font-medium text-sm">Total Amount:</div>
-                  <div className="text-base md:text-lg font-bold">${calculateTotalAmount().toFixed(2)}</div>
+                  <div className="text-lg font-bold">${calculateTotalAmount().toFixed(2)}</div>
                 </div>
                 
-                <div className="pt-2 md:pt-3">
+                <div className="pt-3">
                   <AnimatedButton 
                     variant="primary" 
                     className="w-full"
