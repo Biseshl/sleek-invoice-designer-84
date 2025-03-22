@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Calendar } from '@/components/ui/calendar';
 import { format, parse, isValid, isSameDay, getDay } from 'date-fns';
-import { CalendarIcon, Clock, DollarSign, Trash2, Settings } from 'lucide-react';
+import { CalendarIcon, Clock, DollarSign, Trash2, Settings, Save } from 'lucide-react';
 import { WorkDay, RateSettings, defaultRateSettings } from '@/lib/invoiceTypes';
 import { useToast } from '@/hooks/use-toast';
 import {
