@@ -2,7 +2,7 @@
 import React from 'react';
 import { InvoiceData } from '@/lib/invoiceTypes';
 import { motion } from 'framer-motion';
-import { Download, Mail, Printer, FileText } from 'lucide-react';
+import { Download, Mail, Printer } from 'lucide-react';
 import AnimatedButton from './AnimatedButton';
 import { generatePDF, emailInvoice } from '@/lib/pdfGenerator';
 import { useIsMobile } from '@/hooks/use-mobile';

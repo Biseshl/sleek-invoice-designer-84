@@ -7,13 +7,14 @@ import ClientInfoPanel from '@/components/ClientInfoPanel';
 import BusinessInfoPanel from '@/components/BusinessInfoPanel';
 import WorkCalendarPanel from '@/components/WorkCalendarPanel';
 import { defaultInvoiceData, ClientInfo, BusinessInfo } from '@/lib/invoiceTypes';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useIsMobile, useBreakpoint } from '@/hooks/use-mobile';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { motion } from 'framer-motion';
 
 const Index = () => {
   const [invoiceData, setInvoiceData] = useState(defaultInvoiceData);
   const isMobile = useIsMobile();
+  const isTabletOrAbove = useBreakpoint('md');
 
   const handleClientSelect = (client: ClientInfo) => {
     setInvoiceData(prev => ({
@@ -78,7 +79,7 @@ const Index = () => {
         variants={containerVariants}
         className="flex-1 container mx-auto px-2 sm:px-4 py-4 sm:py-6 pb-20"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
           {/* Left Section - Forms */}
           <motion.div 
             variants={itemVariants}
