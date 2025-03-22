@@ -70,14 +70,14 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
         </AnimatedButton>
       </div>
 
-      <div className="bg-white rounded-lg shadow-elevation border border-border/40 overflow-hidden transform transition-all hover:shadow-lg">
+      <div className="bg-white rounded-lg shadow-elevation border border-border/20 overflow-hidden transform transition-all hover:shadow-lg">
         <div id="invoice-preview" className="invoice-paper bg-white">
           <div className="invoice-paper-inner p-4 sm:p-6 md:p-8 max-w-4xl mx-auto">
             {/* Header - Issuer Info */}
             <div className="mb-6 md:mb-10">
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold text-primary mb-1">{invoiceData.issuerName}</h1>
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold text-primary mb-1">{invoiceData.issuerName || "Your Business Name"}</h1>
               <p className="text-muted-foreground whitespace-pre-line text-sm sm:text-base">
-                {formatAddress(invoiceData.issuerAddress)}
+                {formatAddress(invoiceData.issuerAddress || "Your Business Address")}
               </p>
             </div>
 
@@ -95,17 +95,17 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
                   <span className="font-medium">Invoice Number: </span>
                   {invoiceData.invoiceNumber}
                 </p>
-                <p className="text-muted-foreground text-sm sm:text-base">ABN: {invoiceData.abn}</p>
+                <p className="text-muted-foreground text-sm sm:text-base">ABN: {invoiceData.abn || "XX XXX XXX XXX"}</p>
               </div>
             </div>
 
             {/* Recipient Details */}
             <div className="mb-6 sm:mb-8">
               <h3 className="text-md sm:text-lg font-medium mb-2">ISSUED TO:</h3>
-              <div className="border-l-2 border-primary/20 pl-4">
-                <p className="font-medium text-sm sm:text-base">{invoiceData.recipientName}</p>
+              <div className="border-l-2 border-primary/30 pl-4 py-2 bg-secondary/20 rounded-r-md">
+                <p className="font-medium text-sm sm:text-base">{invoiceData.recipientName || "Client Name"}</p>
                 <p className="text-muted-foreground whitespace-pre-line text-sm sm:text-base">
-                  {formatAddress(invoiceData.recipientAddress)}
+                  {formatAddress(invoiceData.recipientAddress || "Client Address")}
                 </p>
               </div>
             </div>
@@ -113,7 +113,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
             {/* Description */}
             <div className="mb-6 sm:mb-8">
               <h3 className="text-md sm:text-lg font-medium mb-2">Description</h3>
-              <div className="border-t border-b border-gray-200 py-4">
+              <div className="border-t border-b border-gray-200 py-4 bg-gray-50/50 px-4 rounded-md">
                 <p className="whitespace-pre-line text-sm sm:text-base">{invoiceData.description}</p>
               </div>
             </div>
@@ -122,9 +122,9 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
             <div className="mb-10 sm:mb-16">
               <div className="flex justify-end">
                 <div className="w-full sm:w-64">
-                  <div className="flex justify-between py-2 font-medium text-sm sm:text-base">
+                  <div className="flex justify-between py-3 px-4 font-medium text-sm sm:text-base bg-primary/5 rounded-md border border-primary/10">
                     <span>Total:</span>
-                    <span>AUD ${invoiceData.amount}</span>
+                    <span className="text-primary font-semibold">AUD ${invoiceData.amount}</span>
                   </div>
                 </div>
               </div>
@@ -134,14 +134,14 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
             <div className="mt-auto pt-4 sm:pt-6">
               <div className="border-t border-gray-200 pt-4">
                 <h3 className="text-md sm:text-lg font-medium mb-3">Payment Details</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-2 bg-gray-50/50 p-4 rounded-md">
                   <div>
-                    <p className="mb-1 text-sm sm:text-base"><span className="font-medium">Bank: </span>{invoiceData.bankName}</p>
-                    <p className="mb-1 text-sm sm:text-base"><span className="font-medium">Account Name: </span>{invoiceData.accountName}</p>
+                    <p className="mb-1 text-sm sm:text-base"><span className="font-medium">Bank: </span>{invoiceData.bankName || "Your Bank"}</p>
+                    <p className="mb-1 text-sm sm:text-base"><span className="font-medium">Account Name: </span>{invoiceData.accountName || "Your Name"}</p>
                   </div>
                   <div>
-                    <p className="mb-1 text-sm sm:text-base"><span className="font-medium">BSB: </span>{invoiceData.bsb}</p>
-                    <p className="mb-1 text-sm sm:text-base"><span className="font-medium">Account Number: </span>{invoiceData.accountNumber}</p>
+                    <p className="mb-1 text-sm sm:text-base"><span className="font-medium">BSB: </span>{invoiceData.bsb || "XXX-XXX"}</p>
+                    <p className="mb-1 text-sm sm:text-base"><span className="font-medium">Account Number: </span>{invoiceData.accountNumber || "XXXXXXXX"}</p>
                   </div>
                 </div>
               </div>
@@ -149,7 +149,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
               <div className="mt-4 sm:mt-6 text-muted-foreground text-xs sm:text-sm">
                 <p className="mb-1">
                   <span className="font-medium">Contact: </span>
-                  <a href={`mailto:${invoiceData.email}`} className="text-primary hover:underline">{invoiceData.email}</a> | {invoiceData.phone}
+                  <a href={`mailto:${invoiceData.email || "your.email@example.com"}`} className="text-primary hover:underline">{invoiceData.email || "your.email@example.com"}</a> | {invoiceData.phone || "+61 X XXXX XXXX"}
                 </p>
               </div>
             </div>

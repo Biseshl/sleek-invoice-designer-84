@@ -1,19 +1,49 @@
-import * as React from "react"
 
-const MOBILE_BREAKPOINT = 768
+import * as React from "react";
+
+export type Breakpoint = 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+
+const BREAKPOINTS = {
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+  '2xl': 1536,
+};
 
 export function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)
+  const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined);
 
   React.useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
+    const mql = window.matchMedia(`(max-width: ${BREAKPOINTS.md - 1}px)`);
     const onChange = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    }
-    mql.addEventListener("change", onChange)
-    setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
-    return () => mql.removeEventListener("change", onChange)
-  }, [])
+      setIsMobile(window.innerWidth < BREAKPOINTS.md);
+    };
+    mql.addEventListener("change", onChange);
+    setIsMobile(window.innerWidth < BREAKPOINTS.md);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
 
-  return !!isMobile
+  return !!isMobile;
+}
+
+export function useBreakpoint(breakpoint: Breakpoint) {
+  const [isAboveBreakpoint, setIsAboveBreakpoint] = React.useState<boolean | undefined>(undefined);
+
+  React.useEffect(() => {
+    const checkBreakpoint = () => {
+      setIsAboveBreakpoint(window.innerWidth >= BREAKPOINTS[breakpoint]);
+    };
+
+    // Initial check
+    checkBreakpoint();
+
+    // Add listener for window resize
+    window.addEventListener('resize', checkBreakpoint);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', checkBreakpoint);
+  }, [breakpoint]);
+
+  return isAboveBreakpoint;
 }
