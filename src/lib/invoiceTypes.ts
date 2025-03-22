@@ -49,6 +49,13 @@ export interface WorkDay {
   hourlyRate: number;
 }
 
+export interface RateSettings {
+  weekdayRate: number;
+  saturdayRate: number;
+  sundayRate: number;
+  holidayRate?: number;
+}
+
 export const defaultInvoiceData: InvoiceData = {
   invoiceNumber: "INV-001",
   date: new Date().toISOString().split('T')[0],
@@ -79,4 +86,11 @@ export const defaultBusinessInfo: BusinessInfo = {
   accountName: "John Smith",
   bsb: "062-000",
   accountNumber: "12345678"
+};
+
+export const defaultRateSettings: RateSettings = {
+  weekdayRate: 25,
+  saturdayRate: 35,
+  sundayRate: 45,
+  holidayRate: 50
 };

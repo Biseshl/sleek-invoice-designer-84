@@ -55,7 +55,7 @@ const Index = () => {
             <Tabs defaultValue="invoice" className="w-full mb-6">
               <TabsList className="w-full grid grid-cols-3">
                 <TabsTrigger value="invoice">Invoice</TabsTrigger>
-                <TabsTrigger value="clients">Clients</TabsTrigger>
+                <TabsTrigger value="clients">Business/Client</TabsTrigger>
                 <TabsTrigger value="work">Work Calendar</TabsTrigger>
               </TabsList>
               
