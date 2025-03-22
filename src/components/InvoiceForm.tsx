@@ -30,7 +30,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ invoiceData, setInvoiceData }
           <CardTitle className="text-lg font-medium">Invoice Details</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="invoiceNumber">Invoice Number</Label>
               <Input 
@@ -61,41 +61,19 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ invoiceData, setInvoiceData }
               value={invoiceData.description}
               onChange={handleChange}
               className="resize-none"
+              placeholder="Briefly describe the services provided"
             />
           </div>
           
-          <div className="space-y-2">
-            <Label htmlFor="amount">Amount (AUD)</Label>
-            <Input 
-              id="amount" 
-              name="amount" 
-              value={invoiceData.amount}
-              onChange={handleChange}
-            />
-          </div>
+          {/* Removed amount field as it's now calculated from the work calendar */}
           
-          <div className="space-y-2">
-            <Label htmlFor="recipientName">Client Name</Label>
-            <Input 
-              id="recipientName" 
-              name="recipientName" 
-              value={invoiceData.recipientName}
-              onChange={handleChange}
-              placeholder="Select a client from the Clients tab"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="recipientAddress">Client Address</Label>
-            <Textarea 
-              id="recipientAddress" 
-              name="recipientAddress" 
-              rows={3}
-              value={invoiceData.recipientAddress}
-              onChange={handleChange}
-              placeholder="Client address will appear here when you select a client"
-              className="resize-none"
-            />
+          {/* Client info is now managed in ClientInfoPanel */}
+          <div className="p-3 bg-secondary/50 rounded-md text-sm text-muted-foreground">
+            <p>💡 Client details and payment amounts are now managed in their respective tabs:</p>
+            <ul className="list-disc ml-5 mt-1">
+              <li>Update client information in the "Business/Client" tab</li>
+              <li>Track work hours and rates in the "Work Calendar" tab</li>
+            </ul>
           </div>
         </CardContent>
       </Card>

@@ -60,32 +60,32 @@ export const defaultInvoiceData: InvoiceData = {
   invoiceNumber: "INV-001",
   date: new Date().toISOString().split('T')[0],
   description: "Consulting Services",
-  amount: "1,000.00",
+  amount: "0.00",
   
-  recipientName: "Prime Cleaning & Maintenance",
-  recipientAddress: "Level 2/143 Wells St, South\nMelbourne VIC 3205",
+  recipientName: "",
+  recipientAddress: "",
   
-  issuerName: "John Smith",
-  issuerAddress: "123 Business Street\nSydney NSW 2000\nAustralia",
-  abn: "12 345 678 901",
-  email: "john.smith@example.com",
-  phone: "+61 2 1234 5678",
-  bankName: "Commonwealth Bank",
-  accountName: "John Smith",
-  bsb: "062-000",
-  accountNumber: "12345678"
+  issuerName: "",
+  issuerAddress: "",
+  abn: "",
+  email: "",
+  phone: "",
+  bankName: "",
+  accountName: "",
+  bsb: "",
+  accountNumber: ""
 };
 
 export const defaultBusinessInfo: BusinessInfo = {
-  name: "John Smith",
-  address: "123 Business Street\nSydney NSW 2000\nAustralia",
-  abn: "12 345 678 901",
-  email: "john.smith@example.com",
-  phone: "+61 2 1234 5678",
-  bankName: "Commonwealth Bank",
-  accountName: "John Smith",
-  bsb: "062-000",
-  accountNumber: "12345678"
+  name: "Your Business Name",
+  address: "Your Business Address\nCity, State, Postcode\nCountry",
+  abn: "XX XXX XXX XXX",
+  email: "your.email@example.com",
+  phone: "+61 X XXXX XXXX",
+  bankName: "Your Bank",
+  accountName: "Your Name",
+  bsb: "XXX-XXX",
+  accountNumber: "XXXXXXXX"
 };
 
 export const defaultRateSettings: RateSettings = {
