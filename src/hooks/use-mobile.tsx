@@ -12,9 +12,13 @@ const BREAKPOINTS = {
 };
 
 export function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState<boolean>(false);
+  const [isMobile, setIsMobile] = React.useState<boolean>(
+    typeof window !== 'undefined' ? window.innerWidth < BREAKPOINTS.md : false
+  );
 
   React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     // Set initial value
     setIsMobile(window.innerWidth < BREAKPOINTS.md);
     
@@ -22,20 +26,33 @@ export function useIsMobile() {
       setIsMobile(window.innerWidth < BREAKPOINTS.md);
     };
     
-    // Add listener for window resize
-    window.addEventListener('resize', checkMobile);
+    // Add listener for window resize with debounce for performance
+    let timeoutId: NodeJS.Timeout;
+    const debouncedResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkMobile, 100);
+    };
+    
+    window.addEventListener('resize', debouncedResize);
     
     // Cleanup
-    return () => window.removeEventListener('resize', checkMobile);
+    return () => {
+      window.removeEventListener('resize', debouncedResize);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   return isMobile;
 }
 
 export function useBreakpoint(breakpoint: Breakpoint) {
-  const [isAboveBreakpoint, setIsAboveBreakpoint] = React.useState<boolean>(false);
+  const [isAboveBreakpoint, setIsAboveBreakpoint] = React.useState<boolean>(
+    typeof window !== 'undefined' ? window.innerWidth >= BREAKPOINTS[breakpoint] : false
+  );
 
   React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     // Set initial value
     setIsAboveBreakpoint(window.innerWidth >= BREAKPOINTS[breakpoint]);
     
@@ -43,11 +60,20 @@ export function useBreakpoint(breakpoint: Breakpoint) {
       setIsAboveBreakpoint(window.innerWidth >= BREAKPOINTS[breakpoint]);
     };
 
-    // Add listener for window resize
-    window.addEventListener('resize', checkBreakpoint);
+    // Add listener for window resize with debounce
+    let timeoutId: NodeJS.Timeout;
+    const debouncedResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkBreakpoint, 100);
+    };
+
+    window.addEventListener('resize', debouncedResize);
 
     // Cleanup
-    return () => window.removeEventListener('resize', checkBreakpoint);
+    return () => {
+      window.removeEventListener('resize', debouncedResize);
+      clearTimeout(timeoutId);
+    };
   }, [breakpoint]);
 
   return isAboveBreakpoint;
@@ -61,6 +87,8 @@ export function useActiveBreakpoint() {
   const [activeBreakpoint, setActiveBreakpoint] = React.useState<Breakpoint>('sm');
 
   React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const checkBreakpoint = () => {
       const width = window.innerWidth;
       
@@ -80,11 +108,20 @@ export function useActiveBreakpoint() {
     // Initial check
     checkBreakpoint();
 
-    // Add listener for window resize
-    window.addEventListener('resize', checkBreakpoint);
+    // Add listener for window resize with debounce
+    let timeoutId: NodeJS.Timeout;
+    const debouncedResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkBreakpoint, 100);
+    };
+    
+    window.addEventListener('resize', debouncedResize);
 
     // Cleanup
-    return () => window.removeEventListener('resize', checkBreakpoint);
+    return () => {
+      window.removeEventListener('resize', debouncedResize);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   return activeBreakpoint;

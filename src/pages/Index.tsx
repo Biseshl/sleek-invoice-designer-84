@@ -15,6 +15,7 @@ const Index = () => {
   const [invoiceData, setInvoiceData] = useState(defaultInvoiceData);
   const isMobile = useIsMobile();
   const isTabletOrAbove = useBreakpoint('md');
+  const isLargeScreen = useBreakpoint('lg');
 
   const handleClientSelect = (client: ClientInfo) => {
     setInvoiceData(prev => ({
@@ -77,23 +78,23 @@ const Index = () => {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="flex-1 container mx-auto px-2 sm:px-4 py-4 sm:py-6 pb-20"
+        className="flex-1 container mx-auto px-4 py-6 pb-20 max-w-7xl"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Section - Forms */}
           <motion.div 
             variants={itemVariants}
-            className={`lg:col-span-5 ${isMobile ? 'order-2' : 'order-1'}`}
+            className={`${isLargeScreen ? 'lg:col-span-5' : 'w-full'} ${isMobile ? 'order-2' : 'order-1'}`}
           >
             <Tabs defaultValue="invoice" className="w-full mb-6">
               <TabsList className="w-full grid grid-cols-3 mb-4">
-                <TabsTrigger value="invoice" className="text-xs sm:text-sm">Invoice</TabsTrigger>
-                <TabsTrigger value="clients" className="text-xs sm:text-sm">Business/Client</TabsTrigger>
-                <TabsTrigger value="work" className="text-xs sm:text-sm">Work Calendar</TabsTrigger>
+                <TabsTrigger value="invoice" className="text-sm">Invoice</TabsTrigger>
+                <TabsTrigger value="clients" className="text-sm">Business/Client</TabsTrigger>
+                <TabsTrigger value="work" className="text-sm">Work Calendar</TabsTrigger>
               </TabsList>
               
               <TabsContent value="invoice" className="mt-2">
-                <div className="attractive-card p-3 sm:p-6">
+                <div className="attractive-card p-4 sm:p-6 shadow-elevation">
                   <InvoiceForm 
                     invoiceData={invoiceData} 
                     setInvoiceData={setInvoiceData} 
@@ -102,16 +103,18 @@ const Index = () => {
               </TabsContent>
               
               <TabsContent value="clients" className="mt-2 space-y-6">
-                <div className="attractive-card p-3 sm:p-6">
+                <div className="attractive-card p-4 sm:p-6 shadow-elevation">
                   <BusinessInfoPanel onSaveBusinessInfo={handleBusinessInfoSave} />
                 </div>
-                <div className="attractive-card p-3 sm:p-6">
+                <div className="attractive-card p-4 sm:p-6 shadow-elevation">
                   <ClientInfoPanel onSelectClient={handleClientSelect} />
                 </div>
               </TabsContent>
               
               <TabsContent value="work" className="mt-2">
-                <WorkCalendarPanel onGenerateInvoiceAmount={handleGenerateInvoiceAmount} />
+                <div className="attractive-card p-4 sm:p-6 shadow-elevation overflow-hidden">
+                  <WorkCalendarPanel onGenerateInvoiceAmount={handleGenerateInvoiceAmount} />
+                </div>
               </TabsContent>
             </Tabs>
           </motion.div>
@@ -119,7 +122,7 @@ const Index = () => {
           {/* Right Section - Preview */}
           <motion.div 
             variants={itemVariants}
-            className={`lg:col-span-7 ${isMobile ? 'order-1 mb-4' : 'order-2'} overflow-auto`}
+            className={`${isLargeScreen ? 'lg:col-span-7' : 'w-full'} ${isMobile ? 'order-1 mb-4' : 'order-2'}`}
           >
             <div className={`${!isMobile ? 'sticky top-4' : ''}`}>
               <InvoicePreview invoiceData={invoiceData} />
