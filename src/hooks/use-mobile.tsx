@@ -79,6 +79,41 @@ export function useBreakpoint(breakpoint: Breakpoint) {
   return isAboveBreakpoint;
 }
 
+// Added this function to check if below a specific breakpoint
+export function useIsBelowBreakpoint(breakpoint: Breakpoint) {
+  const [isBelowBreakpoint, setIsBelowBreakpoint] = React.useState<boolean>(
+    typeof window !== 'undefined' ? window.innerWidth < BREAKPOINTS[breakpoint] : false
+  );
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    // Set initial value
+    setIsBelowBreakpoint(window.innerWidth < BREAKPOINTS[breakpoint]);
+    
+    const checkBreakpoint = () => {
+      setIsBelowBreakpoint(window.innerWidth < BREAKPOINTS[breakpoint]);
+    };
+
+    // Add listener for window resize with debounce
+    let timeoutId: NodeJS.Timeout;
+    const debouncedResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkBreakpoint, 100);
+    };
+
+    window.addEventListener('resize', debouncedResize);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', debouncedResize);
+      clearTimeout(timeoutId);
+    };
+  }, [breakpoint]);
+
+  return isBelowBreakpoint;
+}
+
 /**
  * Hook to detect current active breakpoint
  * @returns The current active breakpoint: 'sm', 'md', 'lg', 'xl', or '2xl'

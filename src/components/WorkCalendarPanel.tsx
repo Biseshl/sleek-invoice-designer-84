@@ -26,7 +26,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import AnimatedButton from './AnimatedButton';
-import { useBreakpoint } from '@/hooks/use-mobile';
+import { useBreakpoint, useIsBelowBreakpoint } from '@/hooks/use-mobile';
 
 interface WorkCalendarPanelProps {
   onGenerateInvoiceAmount: (amount: string) => void;
@@ -42,6 +42,9 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
   const [isRateDialogOpen, setIsRateDialogOpen] = useState(false);
   const { toast } = useToast();
   const isTabletOrLarger = useBreakpoint('md');
+  const isLargeScreen = useBreakpoint('lg');
+  const isXLScreen = useBreakpoint('xl');
+  const isBelowLG = useIsBelowBreakpoint('lg');
 
   // Load work days and rate settings from localStorage on component mount
   useEffect(() => {
@@ -268,9 +271,9 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div className={`grid grid-cols-1 ${isLargeScreen ? 'xl:grid-cols-12' : 'lg:grid-cols-12'} gap-4 xl:gap-6`}>
           {/* Calendar Section */}
-          <div className="flex flex-col space-y-4 lg:col-span-5">
+          <div className={`flex flex-col space-y-4 ${isLargeScreen ? 'xl:col-span-5' : 'lg:col-span-5'}`}>
             <div className="border rounded-md p-2 md:p-3 bg-white">
               <Calendar
                 mode="single"
@@ -339,7 +342,7 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
                   </Popover>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-3">
+                <div className={`grid ${isXLScreen ? 'grid-cols-2' : isBelowLG ? 'grid-cols-2' : 'grid-cols-1'} gap-3`}>
                   <div className="space-y-2">
                     <Label htmlFor="hours">Hours Worked</Label>
                     <div className="relative">
@@ -387,11 +390,11 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
           </div>
           
           {/* Work Days List and Summary */}
-          <div className="flex flex-col space-y-4 lg:col-span-7">
+          <div className={`flex flex-col space-y-4 ${isLargeScreen ? 'xl:col-span-7' : 'lg:col-span-7'}`}>
             <div className="border rounded-md p-3 md:p-4 flex-1 overflow-hidden bg-white">
               <div className="font-medium mb-3 text-sm">Work Days</div>
               
-              <div className="max-h-[250px] sm:max-h-[300px] overflow-y-auto pr-1">
+              <div className={`max-h-[250px] ${isLargeScreen ? 'lg:max-h-[325px] xl:max-h-[275px] 2xl:max-h-[325px]' : 'sm:max-h-[300px]'} overflow-y-auto pr-1`}>
                 {workDays.length === 0 ? (
                   <div className="text-center text-muted-foreground p-4 md:p-6">
                     <CalendarIcon className="mx-auto h-8 w-8 opacity-50 mb-2" />

@@ -16,6 +16,7 @@ const Index = () => {
   const isMobile = useIsMobile();
   const isTabletOrAbove = useBreakpoint('md');
   const isLargeScreen = useBreakpoint('lg');
+  const isXLScreen = useBreakpoint('xl');
 
   const handleClientSelect = (client: ClientInfo) => {
     setInvoiceData(prev => ({
@@ -78,13 +79,13 @@ const Index = () => {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="flex-1 container mx-auto px-4 py-6 pb-20 max-w-7xl"
+        className="flex-1 container mx-auto px-4 py-6 pb-20 max-w-full xl:max-w-[1500px] 2xl:max-w-[1700px]"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8">
           {/* Left Section - Forms */}
           <motion.div 
             variants={itemVariants}
-            className={`${isLargeScreen ? 'lg:col-span-5' : 'w-full'} ${isMobile ? 'order-2' : 'order-1'}`}
+            className={`${isLargeScreen ? 'lg:col-span-5 xl:col-span-4' : 'w-full'} ${isMobile ? 'order-2' : 'order-1'}`}
           >
             <Tabs defaultValue="invoice" className="w-full mb-6">
               <TabsList className="w-full grid grid-cols-3 mb-4">
@@ -122,7 +123,7 @@ const Index = () => {
           {/* Right Section - Preview */}
           <motion.div 
             variants={itemVariants}
-            className={`${isLargeScreen ? 'lg:col-span-7' : 'w-full'} ${isMobile ? 'order-1 mb-4' : 'order-2'}`}
+            className={`${isLargeScreen ? 'lg:col-span-7 xl:col-span-8' : 'w-full'} ${isMobile ? 'order-1 mb-4' : 'order-2'}`}
           >
             <div className={`${!isMobile ? 'sticky top-4' : ''}`}>
               <InvoicePreview invoiceData={invoiceData} />
