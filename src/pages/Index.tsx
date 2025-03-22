@@ -76,9 +76,9 @@ const Index = () => {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="flex-1 container mx-auto px-4 py-6 pb-20"
+        className="flex-1 container mx-auto px-2 sm:px-4 py-4 sm:py-6 pb-20"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-6">
           {/* Left Section - Forms */}
           <motion.div 
             variants={itemVariants}
@@ -91,23 +91,25 @@ const Index = () => {
                 <TabsTrigger value="work" className="text-xs sm:text-sm">Work Calendar</TabsTrigger>
               </TabsList>
               
-              <TabsContent value="invoice" className="mt-2 attractive-card p-4 sm:p-6">
-                <InvoiceForm 
-                  invoiceData={invoiceData} 
-                  setInvoiceData={setInvoiceData} 
-                />
+              <TabsContent value="invoice" className="mt-2">
+                <div className="attractive-card p-3 sm:p-6">
+                  <InvoiceForm 
+                    invoiceData={invoiceData} 
+                    setInvoiceData={setInvoiceData} 
+                  />
+                </div>
               </TabsContent>
               
               <TabsContent value="clients" className="mt-2 space-y-6">
-                <div className="attractive-card p-4 sm:p-6">
+                <div className="attractive-card p-3 sm:p-6">
                   <BusinessInfoPanel onSaveBusinessInfo={handleBusinessInfoSave} />
                 </div>
-                <div className="attractive-card p-4 sm:p-6">
+                <div className="attractive-card p-3 sm:p-6">
                   <ClientInfoPanel onSelectClient={handleClientSelect} />
                 </div>
               </TabsContent>
               
-              <TabsContent value="work" className="mt-2 attractive-card p-4 sm:p-6">
+              <TabsContent value="work" className="mt-2">
                 <WorkCalendarPanel onGenerateInvoiceAmount={handleGenerateInvoiceAmount} />
               </TabsContent>
             </Tabs>
@@ -116,9 +118,9 @@ const Index = () => {
           {/* Right Section - Preview */}
           <motion.div 
             variants={itemVariants}
-            className={`lg:col-span-7 ${isMobile ? 'order-1 mb-6' : 'order-2'} overflow-auto`}
+            className={`lg:col-span-7 ${isMobile ? 'order-1 mb-4' : 'order-2'} overflow-auto`}
           >
-            <div className={`${!isMobile ? 'sticky top-8' : ''}`}>
+            <div className={`${!isMobile ? 'sticky top-4' : ''}`}>
               <InvoicePreview invoiceData={invoiceData} />
             </div>
           </motion.div>

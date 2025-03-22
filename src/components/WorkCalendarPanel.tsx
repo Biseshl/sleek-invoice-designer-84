@@ -26,6 +26,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import AnimatedButton from './AnimatedButton';
+import { useBreakpoint } from '@/hooks/use-mobile';
 
 interface WorkCalendarPanelProps {
   onGenerateInvoiceAmount: (amount: string) => void;
@@ -34,12 +35,13 @@ interface WorkCalendarPanelProps {
 const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoiceAmount }) => {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [hours, setHours] = useState<string>('5'); // Changed default from 8 to 5
+  const [hours, setHours] = useState<string>('5');
   const [hourlyRate, setHourlyRate] = useState<string>('25');
   const [workDays, setWorkDays] = useState<WorkDay[]>([]);
   const [rateSettings, setRateSettings] = useState<RateSettings>(defaultRateSettings);
   const [isRateDialogOpen, setIsRateDialogOpen] = useState(false);
   const { toast } = useToast();
+  const isTabletOrLarger = useBreakpoint('md');
 
   // Load work days and rate settings from localStorage on component mount
   useEffect(() => {
@@ -83,7 +85,7 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
         setHours(existingWorkDay.hours.toString());
         setHourlyRate(existingWorkDay.hourlyRate.toString());
       } else {
-        setHours('5'); // Changed default from 8 to 5
+        setHours('5');
         // Set hourly rate based on day of the week
         const dayOfWeek = getDay(selected);
         if (dayOfWeek === 0) { // Sunday
@@ -266,15 +268,15 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {/* Calendar */}
-          <div className="flex flex-col space-y-4">
-            <div className="border rounded-md p-3">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          {/* Calendar Section */}
+          <div className="flex flex-col space-y-4 lg:col-span-5">
+            <div className="border rounded-md p-3 bg-white">
               <Calendar
                 mode="single"
                 selected={date}
                 onSelect={handleDateSelect}
-                className={cn("p-2 pointer-events-auto")}
+                className={cn("rounded-md w-full pointer-events-auto")}
                 modifiersClassNames={{
                   selected: 'bg-primary text-primary-foreground',
                 }}
@@ -290,7 +292,7 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
               />
             </div>
 
-            <div className="border rounded-md p-4 space-y-3">
+            <div className="border rounded-md p-4 space-y-3 bg-white">
               <div className="text-sm font-medium">Add Work Day</div>
               
               <div className="grid grid-cols-1 gap-3">
@@ -371,7 +373,7 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
                   </div>
                 </div>
                 
-                <div className="flex items-end">
+                <div>
                   <AnimatedButton 
                     onClick={handleAddWorkDay}
                     className="w-full"
@@ -385,54 +387,56 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
           </div>
           
           {/* Work Days List and Summary */}
-          <div className="flex flex-col space-y-4">
-            <div className="border rounded-md p-4 flex-1 max-h-[400px] overflow-y-auto">
+          <div className="flex flex-col space-y-4 lg:col-span-7">
+            <div className="border rounded-md p-4 flex-1 overflow-hidden bg-white">
               <div className="font-medium mb-3 text-sm">Work Days</div>
               
-              {workDays.length === 0 ? (
-                <div className="text-center text-muted-foreground p-6">
-                  <CalendarIcon className="mx-auto h-8 w-8 opacity-50 mb-2" />
-                  <p className="text-sm">No work days added yet</p>
-                  <p className="text-xs">Select a date and add hours to begin</p>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  {workDays
-                    .sort((a, b) => a.date.getTime() - b.date.getTime())
-                    .map((workDay, index) => (
-                      <div 
-                        key={index}
-                        className="border rounded-md p-3 flex justify-between items-center"
-                      >
-                        <div>
-                          <div className="font-medium">
-                            {format(workDay.date, 'EEE, MMM d, yyyy')}
-                            <span className={`text-xs ml-1 ${getDayRateClass(workDay.date)}`}>
-                              ({getDayTypeLabel(workDay.date)})
-                            </span>
-                          </div>
-                          <div className="text-sm text-muted-foreground">
-                            {workDay.hours} hours @ ${workDay.hourlyRate.toFixed(2)}/hr
-                          </div>
-                          <div className="text-sm font-medium mt-1">
-                            ${(workDay.hours * workDay.hourlyRate).toFixed(2)}
-                          </div>
-                        </div>
-                        <Button 
-                          variant="ghost" 
-                          size="sm"
-                          onClick={() => handleRemoveWorkDay(workDay.date)}
-                          className="h-8 w-8 p-0"
+              <div className="max-h-[250px] sm:max-h-[300px] overflow-y-auto pr-1">
+                {workDays.length === 0 ? (
+                  <div className="text-center text-muted-foreground p-6">
+                    <CalendarIcon className="mx-auto h-8 w-8 opacity-50 mb-2" />
+                    <p className="text-sm">No work days added yet</p>
+                    <p className="text-xs">Select a date and add hours to begin</p>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {workDays
+                      .sort((a, b) => a.date.getTime() - b.date.getTime())
+                      .map((workDay, index) => (
+                        <div 
+                          key={index}
+                          className="border rounded-md p-3 flex justify-between items-center"
                         >
-                          <Trash2 className="h-4 w-4 text-muted-foreground hover:text-destructive" />
-                        </Button>
-                      </div>
-                    ))}
-                </div>
-              )}
+                          <div>
+                            <div className="font-medium text-sm">
+                              {format(workDay.date, 'EEE, MMM d, yyyy')}
+                              <span className={`text-xs ml-1 ${getDayRateClass(workDay.date)}`}>
+                                ({getDayTypeLabel(workDay.date)})
+                              </span>
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {workDay.hours} hours @ ${workDay.hourlyRate.toFixed(2)}/hr
+                            </div>
+                            <div className="text-sm font-medium mt-1">
+                              ${(workDay.hours * workDay.hourlyRate).toFixed(2)}
+                            </div>
+                          </div>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => handleRemoveWorkDay(workDay.date)}
+                            className="h-8 w-8 p-0"
+                          >
+                            <Trash2 className="h-4 w-4 text-muted-foreground hover:text-destructive" />
+                          </Button>
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </div>
             </div>
             
-            <div className="border rounded-md p-4">
+            <div className="border rounded-md p-4 bg-white">
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <div className="font-medium">Total Days:</div>

@@ -15,13 +15,18 @@ export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined);
 
   React.useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${BREAKPOINTS.md - 1}px)`);
-    const onChange = () => {
+    const checkMobile = () => {
       setIsMobile(window.innerWidth < BREAKPOINTS.md);
     };
-    mql.addEventListener("change", onChange);
-    setIsMobile(window.innerWidth < BREAKPOINTS.md);
-    return () => mql.removeEventListener("change", onChange);
+    
+    // Initial check
+    checkMobile();
+    
+    // Add listener for window resize
+    window.addEventListener('resize', checkMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   return !!isMobile;
@@ -46,4 +51,41 @@ export function useBreakpoint(breakpoint: Breakpoint) {
   }, [breakpoint]);
 
   return isAboveBreakpoint;
+}
+
+/**
+ * Hook to detect current active breakpoint
+ * @returns The current active breakpoint: 'sm', 'md', 'lg', 'xl', or '2xl'
+ */
+export function useActiveBreakpoint() {
+  const [activeBreakpoint, setActiveBreakpoint] = React.useState<Breakpoint>('sm');
+
+  React.useEffect(() => {
+    const checkBreakpoint = () => {
+      const width = window.innerWidth;
+      
+      if (width >= BREAKPOINTS['2xl']) {
+        setActiveBreakpoint('2xl');
+      } else if (width >= BREAKPOINTS.xl) {
+        setActiveBreakpoint('xl');
+      } else if (width >= BREAKPOINTS.lg) {
+        setActiveBreakpoint('lg');
+      } else if (width >= BREAKPOINTS.md) {
+        setActiveBreakpoint('md');
+      } else {
+        setActiveBreakpoint('sm');
+      }
+    };
+
+    // Initial check
+    checkBreakpoint();
+
+    // Add listener for window resize
+    window.addEventListener('resize', checkBreakpoint);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', checkBreakpoint);
+  }, []);
+
+  return activeBreakpoint;
 }
