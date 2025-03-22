@@ -34,7 +34,7 @@ interface WorkCalendarPanelProps {
 const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoiceAmount }) => {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [hours, setHours] = useState<string>('8');
+  const [hours, setHours] = useState<string>('5'); // Changed default from 8 to 5
   const [hourlyRate, setHourlyRate] = useState<string>('25');
   const [workDays, setWorkDays] = useState<WorkDay[]>([]);
   const [rateSettings, setRateSettings] = useState<RateSettings>(defaultRateSettings);
@@ -83,7 +83,7 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
         setHours(existingWorkDay.hours.toString());
         setHourlyRate(existingWorkDay.hourlyRate.toString());
       } else {
-        setHours('8');
+        setHours('5'); // Changed default from 8 to 5
         // Set hourly rate based on day of the week
         const dayOfWeek = getDay(selected);
         if (dayOfWeek === 0) { // Sunday
@@ -261,20 +261,20 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
             className="flex items-center gap-1 text-primary"
           >
             <Settings className="h-4 w-4" />
-            <span>Rate Settings</span>
+            <span className="hidden sm:inline">Rate Settings</span>
           </Button>
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Calendar */}
           <div className="flex flex-col space-y-4">
-            <div className="border rounded-md p-4">
+            <div className="border rounded-md p-3">
               <Calendar
                 mode="single"
                 selected={date}
                 onSelect={handleDateSelect}
-                className={cn("p-3 pointer-events-auto")}
+                className={cn("p-2 pointer-events-auto")}
                 modifiersClassNames={{
                   selected: 'bg-primary text-primary-foreground',
                 }}
@@ -290,10 +290,10 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
               />
             </div>
 
-            <div className="border rounded-md p-4 space-y-4">
+            <div className="border rounded-md p-4 space-y-3">
               <div className="text-sm font-medium">Add Work Day</div>
               
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-3">
                 <div className="space-y-2">
                   <Label htmlFor="date">Date</Label>
                   <Popover>
@@ -331,13 +331,13 @@ const WorkCalendarPanel: React.FC<WorkCalendarPanelProps> = ({ onGenerateInvoice
                           handleDateSelect(date);
                         }}
                         initialFocus
-                        className={cn("p-3 pointer-events-auto")}
+                        className={cn("p-2 pointer-events-auto")}
                       />
                     </PopoverContent>
                   </Popover>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-2">
                     <Label htmlFor="hours">Hours Worked</Label>
                     <div className="relative">
