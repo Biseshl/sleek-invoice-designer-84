@@ -1,9 +1,6 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
@@ -12,7 +9,9 @@ import Dashboard from "./pages/Dashboard";
 import InvoiceDetail from "./pages/InvoiceDetail";
 import { UserProvider, useUser } from "./contexts/UserContext";
 import { InvoiceProvider } from "./contexts/InvoiceContext";
+import NotificationProvider from "./components/NotificationProvider";
 
+// Create a client
 const queryClient = new QueryClient();
 
 // Protected route component
@@ -32,6 +31,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+// Define routes
 const AppRoutes = () => (
   <Routes>
     <Route path="/login" element={<Login />} />
@@ -51,20 +51,21 @@ const AppRoutes = () => (
   </Routes>
 );
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <UserProvider>
-      <InvoiceProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
-        </TooltipProvider>
-      </InvoiceProvider>
-    </UserProvider>
-  </QueryClientProvider>
-);
+// Root App component
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <UserProvider>
+        <InvoiceProvider>
+          <NotificationProvider>
+            <BrowserRouter>
+              <AppRoutes />
+            </BrowserRouter>
+          </NotificationProvider>
+        </InvoiceProvider>
+      </UserProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
