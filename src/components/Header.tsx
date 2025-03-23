@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FileText } from 'lucide-react';
+import { FileInvoice, PenSquare } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import HeaderButtons from './HeaderButtons';
 import ThemeToggle from './ThemeToggle';
@@ -20,12 +20,22 @@ const Header: React.FC = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
             <motion.div
-              className="bg-primary/10 p-2 rounded-lg shadow-subtle"
+              className="relative"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+              <div className="bg-primary/10 p-2 rounded-lg shadow-subtle">
+                <FileInvoice className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+              </div>
+              <motion.div 
+                className="absolute -bottom-1 -right-1 bg-accent rounded-full p-1"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.3, type: "spring" }}
+              >
+                <PenSquare className="h-3 w-3 sm:h-4 sm:w-4 text-accent-foreground" />
+              </motion.div>
             </motion.div>
             <div className="flex flex-col">
               <motion.h1 

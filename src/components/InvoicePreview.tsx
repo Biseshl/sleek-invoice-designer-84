@@ -165,6 +165,9 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData, templateTy
                   <span className="font-medium">Contact: </span>
                   <a href={`mailto:${invoiceData.email || "your.email@example.com"}`} className={`${templateType === 'professional' ? 'text-blue-600' : 'text-primary'} hover:underline`}>{invoiceData.email || "your.email@example.com"}</a> | {invoiceData.phone || "+61 X XXXX XXXX"}
                 </p>
+                <p className="text-[10px] text-muted-foreground/70 mt-3 text-center">
+                  Generated with Sleek Invoice Designer • Designed by Bisesh Lamichhane
+                </p>
               </div>
             </div>
           </div>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import InvoiceForm from '@/components/InvoiceForm';
 import InvoicePreview from '@/components/InvoicePreview';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import ClientInfoPanel from '@/components/ClientInfoPanel';
 import BusinessInfoPanel from '@/components/BusinessInfoPanel';
 import WorkCalendarPanel from '@/components/WorkCalendarPanel';
@@ -130,7 +131,7 @@ const Index = () => {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="flex-1 container mx-auto px-4 py-6 pb-20 max-w-[1800px]"
+        className="flex-1 container mx-auto px-4 py-6 pb-12 max-w-[1800px]"
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left Section - Forms */}
@@ -217,6 +218,8 @@ const Index = () => {
           </motion.div>
         </div>
       </motion.main>
+      
+      <Footer />
     </div>
   );
 };
