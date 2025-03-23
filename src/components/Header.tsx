@@ -3,6 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FileText } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import HeaderButtons from './HeaderButtons';
 
 const Header: React.FC = () => {
   const isMobile = useIsMobile();
@@ -44,6 +45,8 @@ const Header: React.FC = () => {
               </motion.p>
             </div>
           </div>
+          
+          <HeaderButtons />
         </div>
       </div>
     </motion.header>
