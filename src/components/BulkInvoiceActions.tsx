@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useInvoices } from '@/contexts/InvoiceContext';
 import { Button } from '@/components/ui/button';
@@ -37,6 +36,9 @@ const BulkInvoiceActions: React.FC = () => {
     }
   };
   
+  const isIndeterminate = selectedInvoices.length > 0 && selectedInvoices.length < savedInvoices.length;
+  const isAllSelected = savedInvoices.length > 0 && selectedInvoices.length === savedInvoices.length;
+  
   const handleMarkAsPaid = () => {
     if (selectedInvoices.length === 0) {
       toast.error('No invoices selected');
@@ -71,12 +73,10 @@ const BulkInvoiceActions: React.FC = () => {
       return;
     }
     
-    // Filter to only selected invoices
     const invoicesToExport = savedInvoices.filter(invoice => 
       selectedInvoices.includes(invoice.id)
     );
     
-    // Create CSV content
     const headers = ['Invoice Number', 'Client Name', 'Amount', 'Date', 'Status'];
     const csvContent = [
       headers.join(','),
@@ -89,7 +89,6 @@ const BulkInvoiceActions: React.FC = () => {
       ].join(','))
     ].join('\n');
     
-    // Create download link
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -172,8 +171,8 @@ const BulkInvoiceActions: React.FC = () => {
             <TableRow>
               <TableHead className="w-[50px]">
                 <Checkbox 
-                  checked={selectedInvoices.length === savedInvoices.length && savedInvoices.length > 0}
-                  indeterminate={selectedInvoices.length > 0 && selectedInvoices.length < savedInvoices.length}
+                  checked={isAllSelected}
+                  indeterminate={isIndeterminate}
                   onCheckedChange={handleSelectAll}
                   aria-label="Select all invoices"
                 />
