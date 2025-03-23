@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { FileText } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import HeaderButtons from './HeaderButtons';
+import ThemeToggle from './ThemeToggle';
 
 const Header: React.FC = () => {
   const isMobile = useIsMobile();
@@ -46,7 +47,10 @@ const Header: React.FC = () => {
             </div>
           </div>
           
-          <HeaderButtons />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <HeaderButtons />
+          </div>
         </div>
       </div>
     </motion.header>

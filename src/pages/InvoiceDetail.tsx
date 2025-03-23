@@ -8,7 +8,7 @@ import InvoicePreview from '@/components/InvoicePreview';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Download, Pencil, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
-import { toast } from 'sonner';
+import { toast } from '@/hooks/use-toast';
 import html2pdf from 'html2pdf.js';
 import {
   AlertDialog,
@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import InvoiceStatusBadge from '@/components/InvoiceStatusBadge';
 
 const InvoiceDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -36,7 +37,7 @@ const InvoiceDetail = () => {
   
   const [invoice, setInvoice] = useState<SavedInvoice | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [invoiceStatus, setInvoiceStatus] = useState<'draft' | 'pending' | 'paid'>('pending');
+  const [invoiceStatus, setInvoiceStatus] = useState<'draft' | 'pending' | 'paid' | 'overdue'>('pending');
 
   useEffect(() => {
     if (!user) {
@@ -48,9 +49,13 @@ const InvoiceDetail = () => {
       const foundInvoice = savedInvoices.find(inv => inv.id === id);
       if (foundInvoice) {
         setInvoice(foundInvoice);
-        setInvoiceStatus(foundInvoice.status);
+        setInvoiceStatus(foundInvoice.status as 'draft' | 'pending' | 'paid' | 'overdue');
       } else {
-        toast.error('Invoice not found');
+        toast({
+          title: "Invoice not found",
+          description: "The invoice you're looking for doesn't exist",
+          variant: "destructive",
+        });
         navigate('/dashboard');
       }
     }
@@ -74,31 +79,45 @@ const InvoiceDetail = () => {
     
     html2pdf().set(options).from(element).save().then(() => {
       element.classList.remove('pdf-export');
-      toast.success('Invoice downloaded successfully');
+      toast({
+        title: "PDF Downloaded",
+        description: "Invoice has been downloaded successfully",
+        variant: "default",
+      });
     });
   };
 
   const handleEditInvoice = () => {
-    // In a real app, you would navigate to an edit page
-    // or populate the form with this invoice's data
-    toast.info('Edit functionality would be implemented in a full application');
+    toast({
+      title: "Edit mode",
+      description: "Edit functionality would be implemented in a full application",
+      variant: "default",
+    });
   };
 
   const handleDeleteInvoice = () => {
     if (!invoice) return;
     
     deleteInvoice(invoice.id);
-    toast.success('Invoice deleted successfully');
+    toast({
+      title: "Invoice deleted",
+      description: "The invoice has been permanently removed",
+      variant: "default",
+    });
     navigate('/dashboard');
   };
 
   const handleStatusChange = (status: string) => {
     if (!invoice) return;
     
-    const newStatus = status as 'draft' | 'pending' | 'paid';
+    const newStatus = status as 'draft' | 'pending' | 'paid' | 'overdue';
     setInvoiceStatus(newStatus);
     updateInvoice(invoice.id, { status: newStatus });
-    toast.success(`Invoice status updated to ${status}`);
+    toast({
+      title: "Status updated",
+      description: `Invoice status has been set to ${status}`,
+      variant: "default",
+    });
   };
 
   if (!invoice) {
@@ -133,7 +152,10 @@ const InvoiceDetail = () => {
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Dashboard
             </Button>
-            <h1 className="text-2xl font-bold">Invoice #{invoice.invoiceNumber}</h1>
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-2xl font-bold">Invoice #{invoice.invoiceNumber}</h1>
+              <InvoiceStatusBadge status={invoiceStatus} />
+            </div>
             <p className="text-muted-foreground">
               Created on {format(new Date(invoice.createdAt), 'PPP')}
             </p>
@@ -142,38 +164,40 @@ const InvoiceDetail = () => {
           <div className="flex flex-wrap gap-2">
             <div className="min-w-[150px]">
               <Select value={invoiceStatus} onValueChange={handleStatusChange}>
-                <SelectTrigger>
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="draft">Draft</SelectItem>
                   <SelectItem value="pending">Pending</SelectItem>
                   <SelectItem value="paid">Paid</SelectItem>
+                  <SelectItem value="overdue">Overdue</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             
-            <Button variant="outline" onClick={handleEditInvoice}>
+            <Button variant="outline" onClick={handleEditInvoice} className="flex-grow sm:flex-grow-0">
               <Pencil className="mr-2 h-4 w-4" />
-              Edit
+              <span className="hidden sm:inline">Edit</span>
             </Button>
             
-            <Button variant="outline" onClick={handleDownloadPDF}>
+            <Button variant="outline" onClick={handleDownloadPDF} className="flex-grow sm:flex-grow-0">
               <Download className="mr-2 h-4 w-4" />
-              Download
+              <span className="hidden sm:inline">Download</span>
             </Button>
             
             <Button 
               variant="destructive" 
               onClick={() => setShowDeleteDialog(true)}
+              className="flex-grow sm:flex-grow-0"
             >
               <Trash2 className="mr-2 h-4 w-4" />
-              Delete
+              <span className="hidden sm:inline">Delete</span>
             </Button>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden">
           <InvoicePreview 
             invoiceData={invoice} 
             templateType={invoice.templateType} 

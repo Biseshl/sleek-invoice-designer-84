@@ -4,15 +4,23 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useUser } from '@/contexts/UserContext';
 import { Button } from '@/components/ui/button';
 import { UserIcon, LogIn, LogOut, LayoutDashboard, ChevronLeft } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const HeaderButtons = () => {
   const { user, logout } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
+  const { toast } = useToast();
 
   const handleLogout = () => {
     logout();
     navigate('/login');
+    
+    toast({
+      title: "Logged out successfully",
+      description: "You have been securely logged out of your account.",
+      variant: "default",
+    });
   };
 
   const handleDashboard = () => {
@@ -72,7 +80,14 @@ const HeaderButtons = () => {
       <Button 
         variant="outline" 
         className="gap-2"
-        onClick={() => navigate('/login')}
+        onClick={() => {
+          navigate('/login');
+          toast({
+            title: "Login Required",
+            description: "Please login to access your invoices",
+            variant: "default",
+          });
+        }}
       >
         <LogIn className="h-4 w-4" />
         <span className="hidden md:inline">Login</span>

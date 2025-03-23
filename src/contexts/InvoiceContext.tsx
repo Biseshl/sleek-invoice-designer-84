@@ -1,10 +1,11 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { InvoiceData, defaultInvoiceData } from '@/lib/invoiceTypes';
 
 export interface SavedInvoice extends InvoiceData {
   id: string;
   createdAt: string;
-  status: 'draft' | 'pending' | 'paid';
+  status: 'draft' | 'pending' | 'paid' | 'overdue';
   templateType: 'standard' | 'professional' | 'minimal';
 }
 
@@ -13,7 +14,7 @@ interface InvoiceContextType {
   currentInvoice: InvoiceData;
   selectedTemplate: 'standard' | 'professional' | 'minimal';
   setCurrentInvoice: React.Dispatch<React.SetStateAction<InvoiceData>>;
-  saveInvoice: (invoice: InvoiceData, template: 'standard' | 'professional' | 'minimal', status?: 'draft' | 'pending' | 'paid') => void;
+  saveInvoice: (invoice: InvoiceData, template: 'standard' | 'professional' | 'minimal', status?: 'draft' | 'pending' | 'paid' | 'overdue') => void;
   updateInvoice: (id: string, updates: Partial<SavedInvoice>) => void;
   deleteInvoice: (id: string) => void;
   setSelectedTemplate: (template: 'standard' | 'professional' | 'minimal') => void;
@@ -24,7 +25,7 @@ export interface InvoiceFilters {
   clientName: string;
   dateFrom: string;
   dateTo: string;
-  status: 'all' | 'draft' | 'pending' | 'paid';
+  status: 'all' | 'draft' | 'pending' | 'paid' | 'overdue';
 }
 
 const InvoiceContext = createContext<InvoiceContextType | undefined>(undefined);
@@ -52,7 +53,7 @@ export const InvoiceProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const saveInvoice = (
     invoice: InvoiceData, 
     template: 'standard' | 'professional' | 'minimal', 
-    status: 'draft' | 'pending' | 'paid' = 'pending'
+    status: 'draft' | 'pending' | 'paid' | 'overdue' = 'pending'
   ) => {
     const newInvoice: SavedInvoice = {
       ...invoice,
