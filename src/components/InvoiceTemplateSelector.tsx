@@ -9,7 +9,7 @@ import { Check } from 'lucide-react';
 const InvoiceTemplateSelector: React.FC = () => {
   const { selectedTemplate, setSelectedTemplate } = useInvoices();
 
-  const templates = [
+  const templates: { id: 'standard' | 'professional' | 'minimal', name: string, description: string, color: string }[] = [
     {
       id: 'standard',
       name: 'Standard',

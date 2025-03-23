@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { InvoiceData, defaultInvoiceData } from '@/lib/invoiceTypes';
 
@@ -12,12 +11,12 @@ export interface SavedInvoice extends InvoiceData {
 interface InvoiceContextType {
   savedInvoices: SavedInvoice[];
   currentInvoice: InvoiceData;
-  selectedTemplate: string;
+  selectedTemplate: 'standard' | 'professional' | 'minimal';
   setCurrentInvoice: React.Dispatch<React.SetStateAction<InvoiceData>>;
-  saveInvoice: (invoice: InvoiceData, template: string, status?: 'draft' | 'pending' | 'paid') => void;
+  saveInvoice: (invoice: InvoiceData, template: 'standard' | 'professional' | 'minimal', status?: 'draft' | 'pending' | 'paid') => void;
   updateInvoice: (id: string, updates: Partial<SavedInvoice>) => void;
   deleteInvoice: (id: string) => void;
-  setSelectedTemplate: (template: string) => void;
+  setSelectedTemplate: (template: 'standard' | 'professional' | 'minimal') => void;
   filterInvoices: (filters: Partial<InvoiceFilters>) => SavedInvoice[];
 }
 
@@ -41,23 +40,26 @@ export const useInvoices = () => {
 export const InvoiceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [savedInvoices, setSavedInvoices] = useState<SavedInvoice[]>([]);
   const [currentInvoice, setCurrentInvoice] = useState<InvoiceData>(defaultInvoiceData);
-  const [selectedTemplate, setSelectedTemplate] = useState<string>('standard');
+  const [selectedTemplate, setSelectedTemplate] = useState<'standard' | 'professional' | 'minimal'>('standard');
 
   useEffect(() => {
-    // Load saved invoices from localStorage
     const storedInvoices = localStorage.getItem('savedInvoices');
     if (storedInvoices) {
       setSavedInvoices(JSON.parse(storedInvoices));
     }
   }, []);
 
-  const saveInvoice = (invoice: InvoiceData, template: string, status: 'draft' | 'pending' | 'paid' = 'pending') => {
+  const saveInvoice = (
+    invoice: InvoiceData, 
+    template: 'standard' | 'professional' | 'minimal', 
+    status: 'draft' | 'pending' | 'paid' = 'pending'
+  ) => {
     const newInvoice: SavedInvoice = {
       ...invoice,
       id: Math.random().toString(36).substring(2, 9),
       createdAt: new Date().toISOString(),
       status,
-      templateType: template as any
+      templateType: template
     };
 
     const updatedInvoices = [...savedInvoices, newInvoice];
@@ -81,12 +83,10 @@ export const InvoiceProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const filterInvoices = (filters: Partial<InvoiceFilters>) => {
     return savedInvoices.filter(invoice => {
-      // Filter by client name
       if (filters.clientName && !invoice.recipientName.toLowerCase().includes(filters.clientName.toLowerCase())) {
         return false;
       }
       
-      // Filter by date range
       if (filters.dateFrom) {
         const fromDate = new Date(filters.dateFrom);
         const invoiceDate = new Date(invoice.date);
@@ -99,7 +99,6 @@ export const InvoiceProvider: React.FC<{ children: React.ReactNode }> = ({ child
         if (invoiceDate > toDate) return false;
       }
       
-      // Filter by status
       if (filters.status && filters.status !== 'all' && invoice.status !== filters.status) {
         return false;
       }
